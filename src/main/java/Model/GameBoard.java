@@ -80,14 +80,33 @@ public class GameBoard {
             };
             GUI gui = new GUI(juniorFields);
 
+                GUI_Player player;
             // Sæt spillerne på GUI_Gameboard
             Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
             for (int i = 0; i < players.length; i++) {
                 GUI_Car car = new GUI_Car();
                 car.setPrimaryColor(colors[i]);
-                GUI_Player player = new GUI_Player(players[i].getName(), 20, car);
-                gui.addPlayer(player);
-                start.setCar(player, true);
+
+                switch (players.length) {
+                    case 2:
+                         player = new GUI_Player(players[i].getName(), 20, car);
+                        gui.addPlayer(player);
+                        start.setCar(player, true);
+                        break;
+                    case 3:
+                        player = new GUI_Player(players[i].getName(), 18, car);
+                        gui.addPlayer(player);
+                        start.setCar(player, true);
+                        break;
+                    case 4:
+                         player = new GUI_Player(players[i].getName(), 16, car);
+                        gui.addPlayer(player);
+                        start.setCar(player, true);
+                         break;
+                    default:
+                    break;
+                }
+
             }
 
 
