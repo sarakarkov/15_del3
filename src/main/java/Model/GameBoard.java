@@ -24,15 +24,26 @@ public class GameBoard {
             }
         }
         input.nextLine();  // Fordi nextInt ikke kalder \n som er ny line, derfor bliver denne automatisk kaldt
+        players = new Player[totalPlaysers];
+        for (int i = 0; i < totalPlaysers; i++) {
+            System.out.println("Indtast spiller nr. " + (i + 1));
+            String playerName = input.nextLine();
 
-            players = new Player[totalPlaysers];
-            for (int i = 0; i < totalPlaysers; i++) {
-                System.out.println("Indtast spiller nr. " + (i + 1));
-                String playerName = input.nextLine();
-                players[i] = new Player(i, playerName);
+            boolean exist = false;
+            for(Player p : players){
+                if(p != null && p.getName().equals(playerName)){
+                    exist = true;
+                }
             }
-            System.out.println("Spillet begynder");
+            if(!exist){
+                players[i] = new Player(i, playerName);
+            }else {
+                i--;
+                System.out.println("Navnet eksisterer allerede.");
+            }
         }
+        System.out.println("Spillet begynder");
+    }
 
     public GameBoard() {
             initPlayers();
