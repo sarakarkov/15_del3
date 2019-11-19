@@ -62,7 +62,7 @@ public class ChanceCard {
         card1 = new String[card.length];
         while(i < card1.length) {
 
-           int value = (int)Math.random()*card1.length;
+           int value = (int)Math.random()*card1.length);
             if (card1[value]==null){
                 card1[value]=card[i];
 
