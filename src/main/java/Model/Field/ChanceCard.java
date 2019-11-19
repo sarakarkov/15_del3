@@ -48,12 +48,9 @@ public class ChanceCard {
         String card1 = card[0];
         for(int i=0; i<card.length-1;i++){
             card[i]=card[i+1];
-
         }
-
         card[card.length-1]= card1;
         return card1;
-
     }
 
     public void shuffleCard(){
