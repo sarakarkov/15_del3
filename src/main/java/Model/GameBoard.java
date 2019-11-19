@@ -5,6 +5,7 @@ import gui_main.GUI;
 import java.util.Scanner;
 import java.awt.*;
 
+
 public class GameBoard {
     private boolean gameOver;
     private Player[] players;
@@ -86,6 +87,7 @@ public class GameBoard {
             for (int i = 0; i < players.length; i++) {
                 GUI_Car car = new GUI_Car();
                 car.setPrimaryColor(colors[i]);
+                Loser loser = new Loser();
 
                 switch (players.length) {
                     case 2:
@@ -111,6 +113,9 @@ public class GameBoard {
 
 
 
+            }
         }
-    }
+
+
+
 
