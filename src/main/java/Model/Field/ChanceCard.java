@@ -1,5 +1,10 @@
 package Model.Field;
 
+import Model.Player;
+import gui_fields.GUI_Field;
+import gui_fields.GUI_Player;
+import gui_main.GUI;
+
 public class ChanceCard {
     private String name;
     private String action;
@@ -9,9 +14,18 @@ public class ChanceCard {
         this.action = action;
     }
 
-    public void action(){
+    public String getName(){
+        return name;
+    }
+
+    public void action(GUI_Field[] juniorFields, Player player, GUI_Player guiPlayer){
         switch(action){
             case "#1":
+                juniorFields[player.getPosition()].setCar(guiPlayer, false);
+                int startIndex = 0;
+                player.setPosition(startIndex);
+                juniorFields[startIndex].setCar(guiPlayer, true);
+                guiPlayer.setBalance(guiPlayer.getBalance() + 2);
                 break;
             case "#2":
                 break;
