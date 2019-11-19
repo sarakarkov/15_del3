@@ -5,6 +5,15 @@ import gui_main.GUI;
 import java.util.Scanner;
 import java.awt.*;
 
+
+
+
+
+
+
+
+
+
 public class GameBoard {
     private boolean gameOver;
     private Player[] players;
@@ -12,37 +21,32 @@ public class GameBoard {
     public void initPlayers() {
         // Initialisering af spillere
         Scanner input = new Scanner(System.in);
-        int totalPlaysers;
+        int totalPlayers;
 
         while (true) {
             try {
                 System.out.println("Indtast antal spillere mellem 2 og 4:");
-                totalPlaysers = input.nextInt();
-                if (totalPlaysers > 1 && totalPlaysers < 5) break;
+                totalPlayers = input.nextInt();
+                if (totalPlayers > 1 && totalPlayers < 5) break;
             } catch (Exception e) {
                 input.nextLine();  // Fordi nextInt ikke kalder \n som er ny line, derfor bliver denne automatisk kaldt
             }
         }
         input.nextLine();  // Fordi nextInt ikke kalder \n som er ny line, derfor bliver denne automatisk kaldt
-        players = new Player[totalPlaysers];
-        for (int i = 0; i < totalPlaysers; i++) {
+
+        players = new Player[totalPlayers];
+        for (int i = 0; i < totalPlayers; i++) {
             System.out.println("Indtast spiller nr. " + (i + 1));
             String playerName = input.nextLine();
+            players[i] = new Player(i, playerName);
 
-            boolean exist = false;
-            for(Player p : players){
-                if(p != null && p.getName().equals(playerName)){
-                    exist = true;
-                }
-            }
-            if(!exist){
-                players[i] = new Player(i, playerName);
-            }else {
-                i--;
-                System.out.println("Navnet eksisterer allerede.");
-            }
+
         }
-        System.out.println("Spillet begynder");
+
+            System.out.println("Spillet begynder");
+
+
+
     }
 
     public GameBoard() {
@@ -88,6 +92,14 @@ public class GameBoard {
                 gui.addPlayer(player);
                 start.setCar(player, true);
             }
+
+
+
+
+
+
+
+
 
         }
     }
