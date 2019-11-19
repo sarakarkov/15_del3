@@ -1,5 +1,8 @@
 package Model;
 
+import gui_fields.GUI_Car;
+import gui_fields.GUI_Player;
+
 public class Player {
     private int id;
     private String name;
@@ -13,6 +16,5 @@ public class Player {
         return this.name;
     }
     public int getId(){ return this.id; }
-
 
 }
