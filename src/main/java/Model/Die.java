@@ -11,4 +11,9 @@ public class Die {
     public int getDie() {
         return this.value;
 }
+
+
+
+
+
 }

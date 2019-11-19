@@ -1,8 +1,9 @@
 package Model;
 
+import gui_fields.GUI_Player;
+
 public class Account {
     private Player player;
-
     private int balance = 1000;
 
     public Account(Player player){
