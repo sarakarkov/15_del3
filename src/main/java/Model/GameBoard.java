@@ -63,8 +63,8 @@ public class GameBoard {
             GUI_Street museum = new GUI_Street("Museet", "$2", "Se flotte ting her", "2", Color.pink, Color.black);
             GUI_Street library = new GUI_Street("Biblioteket", "$2", "Læs bøger her", "2", Color.pink, Color.black);
             GUI_Chance chance2 = new GUI_Chance("?", "CHANCE", "Tag et chancekort", Color.white, Color.black);
-            GUI_Street skatepark = new GUI_Street("Skateparken", "$2", "Hurtig hurtig", "2", new Color(255, 255, 128), Color.black);
-            GUI_Street swimmingpool = new GUI_Street("Swimmingpoolen", "$2", "Svøm lille fisk", "2", new Color(255, 255, 128), Color.black);
+            GUI_Street skatepark = new GUI_Street("Skateparken", "$2", "Hurtig hurtig", "2", new Color(255, 153, 51), Color.black);
+            GUI_Street swimmingpool = new GUI_Street("Swimmingpoolen", "$2", "Svøm lille fisk", "2", new Color(255, 153, 51), Color.black);
             GUI_Refuge pause = new GUI_Refuge("default", "Gratis parkering", "Gratis parkering", "Gratis parkering", Color.white, Color.black);
             GUI_Street arcade = new GUI_Street("Spillehallen", "$3", "Spillehallen", "3", Color.red, Color.black);
             GUI_Street cinema = new GUI_Street("Biografen", "$3", "Biografen", "3", Color.red, Color.black);
@@ -172,7 +172,7 @@ public class GameBoard {
                         ChanceField chanceField = new ChanceField();
                         ChanceCard chanceCard = chanceField.getRandomCard();
                         gui.displayChanceCard(chanceCard.getName());
-                        chanceCard.action(juniorFields, currentPlayer, guiPlayers[playerIndex]);
+                        chanceCard.action(juniorFields, currentPlayer, guiPlayers[playerIndex],guiPlayers,players);
                         break;
                     case "GUI_Jail":
                         GUI_Jail guiJail = (GUI_Jail) juniorFields[currentPlayer.getPosition()];
