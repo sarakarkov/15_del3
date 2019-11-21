@@ -3,26 +3,23 @@ package Model;
 import gui_fields.GUI_Player;
 
 public class Account {
-    private Player player;
-    private int balance = 1000;
+    private int balance;
 
-    public Account(Player player){
-        this.player = player;
-    }
-
-    public void addBalance(int balance){
-        this.balance += balance;
-        if(this.balance < 0) setBalance(0);
-    }
-    public void setBalance(int balance){
+    public Account(int balance){
         this.balance = balance;
-        if(this.balance < 0) this.balance = 0;
     }
 
-
-    public Player getPlayer(){ return this.player; }
-    public String getBalanceString() { return Integer.toString(this.balance); }
     public int getBalance() {
         return this.balance;
+    }
+    public void setBalance(GUI_Player currentGuiPlayer, int balance){
+        this.balance = balance;
+        if(this.balance < 0) this.balance = 0;
+        currentGuiPlayer.setBalance(this.balance);
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(this.balance);
     }
 }
