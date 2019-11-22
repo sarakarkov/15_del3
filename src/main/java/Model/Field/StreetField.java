@@ -1,9 +1,13 @@
 package Model.Field;
 
+import Model.Player;
+import gui_fields.GUI_Player;
+
 import java.awt.*;
 
 public class StreetField extends Field {
     private int rent;
+    private Player owner;
 
 
     public StreetField(String name, String tooltip, String description, int rent) {
@@ -21,6 +25,18 @@ public class StreetField extends Field {
         this.rent = rent;
     }
 
+    @Override
+    public void fieldAction(Player player) {
+        if(owner == null){
+            owner = player;
+            player.getAccount().setBalance(player.getAccount().getBalance() - rent);
+        } else{
+            owner.getAccount().setBalance(owner.getAccount().getBalance() + rent);
+            player.getAccount().setBalance(player.getAccount().getBalance() - rent);
+        }
+    }
+
+    public Player getOwner() { return owner; }
     public String getRentString() {
         return Integer.toString(rent);
     }

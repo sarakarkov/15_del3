@@ -123,15 +123,65 @@ public class GameBoard {
                 startingBalance = 16;
             }
             guiPlayer = new GUI_Player(players[i].getName(), startingBalance, car);
-            players[i].getAccount().setBalance(guiPlayer, startingBalance);
+            players[i].getAccount().setBalance(startingBalance);
             gui.addPlayer(guiPlayer);
             guiFields[0].setCar(guiPlayer, true); //start feltet
             guiPlayers[i] = guiPlayer;
         }
     }
 
-    public void fieldAction(){
+    public void fieldAction(Player player){
+        Field field = fields[player.getPositionIndex()];
+        field.fieldAction(player);
 
+        //Hvis man er rykket frem over start så skal indexet opdateres
+        if(player.getPositionIndex() >= fields.length){
+            player.setPlayerLocation(player.getPositionIndex() - fields.length);
+        }
+
+        System.out.println(player.getPositionIndex());
+        if(field.getName().equals("?")) //Hvis det er et chance felt
+        {
+            ChanceField chanceField = (ChanceField) field;
+
+            while(true) {
+                //Virker fordi du ikke kan lande på det samme felt i træk
+                Field newField = fields[player.getPositionIndex()];
+                if (field != newField) {
+                    updateGui();
+                    field.fieldAction(player);
+                    field = newField;
+                } else {
+                    break;
+                }
+            }
+            switch(chanceField.getCurrentRandomCardIndex()){
+                case 1:
+                    break;
+                case 2:
+                case 5:
+                case 6:
+                case 10:
+                case 12:
+                case 13:
+                    //Hvis spilleren har trukket kortet at de skal have en grund gratis hvis de lander på en grund der ikke er ejet
+                    StreetField streetField = (StreetField)fields[player.getPositionIndex()];
+                    if(streetField.getOwner() == null){
+                        player.getAccount().setBalance(player.getAccount().getBalance() + streetField.getRent());
+                    }
+                    break;
+                case 3:
+                    //Træk et ekstra kort hvis du har fået kort nr 3. (MEN først efter man har lavet aktionen på det nye felt man er landet på)
+                    chanceField.fieldAction(player);
+                    break;
+                case 9:
+                    player.getAccount().setBalance(player.getAccount().getBalance() + players.length);
+                    for(Player otherPlayer : players){
+                        otherPlayer.getAccount().setBalance(otherPlayer.getAccount().getBalance() - 1);
+                    }
+                    break;
+            }
+        }
     }
 
     public boolean hasAnyoneLost(){
@@ -150,10 +200,8 @@ public class GameBoard {
 
         int currentPlayerIndex = 0;
         Player currentPlayer;
-        GUI_Player currentGUIPlayer;
         while (!gameOver) {
             currentPlayer = players[currentPlayerIndex];
-            currentGUIPlayer = guiPlayers[currentPlayerIndex];
 
             //Kast terning
             gui.getUserButtonPressed("", "Kast terning"); //Her stopper koden indtil brugeren har klikket på knappen
@@ -163,11 +211,33 @@ public class GameBoard {
             int d2Value = d2.getDie();
             gui.setDice(d1Value, 0, 0, d2Value, 1, 0); //Se GUI docs for forklaring
 
+            //Tjekker om man er i spjældet
+            if(currentPlayer.IsJailed()){
+                if(!currentPlayer.isHavingJailCard()) {
+                    currentPlayer.getAccount().setBalance(currentPlayer.getAccount().getBalance() - 1);
+                }else{
+                    currentPlayer.setHaveJailCard(false);
+                }
+                currentPlayer.setJailed(false);
+            }
+
             //Skift bil position
-            currentPlayer.movePlayer(guiFields, currentGUIPlayer, d1Value, d2Value);
+            int newLocation = currentPlayer.getPositionIndex() + d1Value + d2Value;
+            if(newLocation >= fields.length){
+                newLocation = newLocation - fields.length;
+            }
+            currentPlayer.setPlayerLocation(newLocation);
+
+            //opdater gui
+            updateGui();
 
             //Når man lander på et felt skal der ske noget
-            fieldAction();
+            fieldAction(currentPlayer);
+
+            //checker om nogen har passeret start
+            for(Player player : players){
+                ((StartField) fields[0]).isFieldPassed(player);
+            }
 
             //checker om spillet skal stoppes
             if(hasAnyoneLost()){
@@ -175,9 +245,38 @@ public class GameBoard {
                 gameOver = true;
             }
 
+            //opdater gui
+            updateGui();
+
             //tur slut
             currentPlayerIndex++;
             if(currentPlayerIndex == players.length) currentPlayerIndex = 0;
+        }
+    }
+
+    public void updateGui(){
+        for(Player player : players) {
+            for (GUI_Player guiPlayer : guiPlayers) {
+                if(guiPlayer.getName().equals(player.getName())){
+                    guiPlayer.setBalance(player.getAccount().getBalance());
+                    guiFields[player.getOldPositionIndex()].setCar(guiPlayer, false);
+                    guiFields[player.getPositionIndex()].setCar(guiPlayer, true);
+                }
+            }
+        }
+
+        for(int i = 0; i< fields.length;i++){
+            Field field = fields[i];
+            GUI_Field guiField = guiFields[i];
+            try{
+                Player fieldOwner = ((StreetField) field).getOwner();
+                if(fieldOwner != null) {
+                    ((GUI_Street) guiField).setOwnerName(fieldOwner.getName());
+                }
+            }
+            catch(Exception e){
+                //Hvis det ikke er et streetfelt så bliver dette ramt.
+            }
         }
     }
 

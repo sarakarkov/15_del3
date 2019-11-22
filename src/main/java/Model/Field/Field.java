@@ -1,5 +1,8 @@
 package Model.Field;
 
+import Model.Player;
+import gui_fields.GUI_Player;
+
 import java.awt.*;
 
 abstract public class Field {
@@ -30,6 +33,8 @@ abstract public class Field {
         this.foregroundColor = foregroundColor;
         this.backgroundColor = backgroundColor;
     }
+
+    public abstract void fieldAction(Player player);
 
     public String getName() {
         return name;

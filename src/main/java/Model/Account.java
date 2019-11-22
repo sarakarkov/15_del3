@@ -12,10 +12,9 @@ public class Account {
     public int getBalance() {
         return this.balance;
     }
-    public void setBalance(GUI_Player currentGuiPlayer, int balance){
+    public void setBalance(int balance){
         this.balance = balance;
         if(this.balance < 0) this.balance = 0;
-        currentGuiPlayer.setBalance(this.balance);
     }
 
     @Override
