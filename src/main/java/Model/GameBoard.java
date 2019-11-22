@@ -55,29 +55,29 @@ public class GameBoard {
         //Med andre ord det er har betydning hvilket index i listen hvert felt får fx så er Field[0] = start feltet osv..
         fields = new Field[]{
             new StartField("Start", "Modtag: $2", "Modtag $2, når du passerer start"),
-            new StreetField("Burgerbaren", "$1", "Bli tyk her", 1),
-            new StreetField("Pizzahuset", "$1", "Bli også tyk her", 1),
+            new StreetField("Burgerbaren", "$1", "Bli tyk her", 1,new Color(165,42,42)),
+            new StreetField("Pizzahuset", "$1", "Bli også tyk her", 1,new Color(165,42,42)),
             new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Slikbutikken", "$1", "Slik noget", 1),
-            new StreetField("Iskiosken", "$1", "Bli kølet ned", 1),
+            new StreetField("Slikbutikken", "$1", "Slik noget", 1,new Color(135,210,255)),
+            new StreetField("Iskiosken", "$1", "Bli kølet ned", 1,new Color(135,210,255)),
             new PrisonField("default", "Besøg fængslet", "På besøg"), //default fordi sådan er GUI'en sat op til at vise på besøg billedet...
-            new StreetField("Museet", "$2", "Se noget gammelt", 2),
-            new StreetField("Biblioteket", "$2", "Se noget andet gammelt", 2),
+            new StreetField("Museet", "$2", "Se noget gammelt", 2,Color.pink),
+            new StreetField("Biblioteket", "$2", "Se noget andet gammelt", 2,Color.pink),
             new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Skaterparken", "$2", "Kom til skade", 2),
-            new StreetField("Swimmingpoolen", "$2", "Mulighed for at drukne", 2),
+            new StreetField("Skaterparken", "$2", "Kom til skade", 2,new Color(255,153,51)),
+            new StreetField("Swimmingpoolen", "$2", "Mulighed for at drukne", 2,new Color(255,153,51)),
             new EmptyField("default", "Gratis parkering", "Gratis parkering"),
-            new StreetField("Spillehallen", "$3", "Ludomani kan forekomme", 3),
-            new StreetField("Biografen", "$3", "Tag en lur", 3),
+            new StreetField("Spillehallen", "$3", "Ludomani kan forekomme", 3,Color.red),
+            new StreetField("Biografen", "$3", "Tag en lur", 3,Color.red),
             new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Legetøjsbutikken", "$3", "Bazookaer osv..", 3),
-            new StreetField("Dyrehandlen", "$3", "Vi har kun pingviner", 3),
+            new StreetField("Legetøjsbutikken", "$3", "Bazookaer osv..", 3,Color.yellow),
+            new StreetField("Dyrehandlen", "$3", "Vi har kun pingviner", 3,Color.yellow),
             new JailField("default", "Gå i fængslet", "Gå til fængsel"), //default fordi sådan er GUI'en sat op til at vise jail billedet HVIS på besøg allerede er vist før billedet...
-            new StreetField("Bowlinghallen", "$4", "Vi har ingen bander!", 4),
-            new StreetField("ZOO", "$4", "Find holger her", 4),
+            new StreetField("Bowlinghallen", "$4", "Vi har ingen bander!", 4,new Color(36,154,50, 253)),
+            new StreetField("ZOO", "$4", "Find holger her", 4,new Color(36,154,50, 253)),
             new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Vandlandet", "$5", "Drukne død version 2", 5),
-            new StreetField("Strandpromenaden", "$5", "HUSK SOLCREME!", 5)
+            new StreetField("Vandlandet", "$5", "Drukne død version 2", 5,Color.blue),
+            new StreetField("Strandpromenaden", "$5", "HUSK SOLCREME!", 5,Color.blue)
         };
     }
 
