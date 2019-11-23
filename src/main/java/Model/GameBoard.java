@@ -1,20 +1,14 @@
 package Model;
 
+import Model.ChanceCard.*;
 import Model.Field.*;
-import gui_fields.*;
-import gui_main.GUI;
-import java.util.Scanner;
+
 import java.awt.*;
+import java.util.Scanner;
 
 public class GameBoard {
-    private GUI gui;
-    private GUI_Player[] guiPlayers;
-    private GUI_Field[] guiFields;
-
-    private boolean gameOver;
     private Player[] players;
     private Field[] fields;
-
 
     public void setupPlayers() {
         // Initialisering af spillere
@@ -41,7 +35,10 @@ public class GameBoard {
                 }
             }
             if(!exist){
-                players[i] = new Player(i, playerName, new Account(20));
+                Account account = new Account(20);;
+                if(totalPlayers == 3) account = new Account(18);
+                else if(totalPlayers == 4) account = new Account(16);
+                players[i] = new Player(playerName, account);
             }else {
                 i--;
                 System.out.println("Navnet eksisterer allerede.");
@@ -51,242 +48,223 @@ public class GameBoard {
     }
 
     public void setupFields(){
-        //Som en vilkårlig diskret forelæser kunne sige det. ORDER MATTERS!
-        //Med andre ord det er har betydning hvilket index i listen hvert felt får fx så er Field[0] = start feltet osv..
         fields = new Field[]{
-            new StartField("Start", "Modtag: $2", "Modtag $2, når du passerer start"),
-            new StreetField("Burgerbaren", "$1", "Bli tyk her", 1,new Color(165,42,42)),
-            new StreetField("Pizzahuset", "$1", "Bli også tyk her", 1,new Color(165,42,42)),
-            new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Slikbutikken", "$1", "Slik noget", 1,new Color(135,210,255)),
-            new StreetField("Iskiosken", "$1", "Bli kølet ned", 1,new Color(135,210,255)),
-            new PrisonField("default", "Besøg fængslet", "På besøg"), //default fordi sådan er GUI'en sat op til at vise på besøg billedet...
-            new StreetField("Museet", "$2", "Se noget gammelt", 2,Color.pink),
-            new StreetField("Biblioteket", "$2", "Se noget andet gammelt", 2,Color.pink),
-            new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Skaterparken", "$2", "Kom til skade", 2,new Color(255,153,51)),
-            new StreetField("Swimmingpoolen", "$2", "Mulighed for at drukne", 2,new Color(255,153,51)),
-            new EmptyField("default", "Gratis parkering", "Gratis parkering"),
-            new StreetField("Spillehallen", "$3", "Ludomani kan forekomme", 3,Color.red),
-            new StreetField("Biografen", "$3", "Tag en lur", 3,Color.red),
-            new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Legetøjsbutikken", "$3", "Bazookaer osv..", 3,Color.yellow),
-            new StreetField("Dyrehandlen", "$3", "Vi har kun pingviner", 3,Color.yellow),
-            new JailField("default", "Gå i fængslet", "Gå til fængsel"), //default fordi sådan er GUI'en sat op til at vise jail billedet HVIS på besøg allerede er vist før billedet...
-            new StreetField("Bowlinghallen", "$4", "Vi har ingen bander!", 4,new Color(36,154,50, 253)),
-            new StreetField("ZOO", "$4", "Find holger her", 4,new Color(36,154,50, 253)),
-            new ChanceField("?", "CHANCE", "Tag et chancekort"),
-            new StreetField("Vandlandet", "$5", "Drukne død version 2", 5,Color.blue),
-            new StreetField("Strandpromenaden", "$5", "HUSK SOLCREME!", 5,Color.blue)
+            new StartField("Start", "Modtag: $2", "Modtag $1, når du passerer start"), //0
+            new StreetField("Burgerbaren", "$1", "Bli tyk her", 1, new Color(165,42,42)), //1
+            new StreetField("Pizzahuset", "$1", "Bli også tyk her", 1, new Color(165,42,42)), //2
+            new ChanceField("?", "CHANCE", "Tag et chancekort"), //3
+            new StreetField("Slikbutikken", "$1", "Slik noget", 1, new Color(135,210,255)), //4
+            new StreetField("Iskiosken", "$1", "Bli kølet ned", 1, new Color(135,210,255)), //5
+            new JailField("default", "Besøg fængslet", "På besøg"), //6
+            new StreetField("Museet", "$2", "Se noget gammelt", 2, Color.pink), //7
+            new StreetField("Biblioteket", "$2", "Se noget andet gammelt", 2, Color.pink), //8
+            new ChanceField("?", "CHANCE", "Tag et chancekort"), //9
+            new StreetField("Skaterparken", "$2", "Kom til skade", 2, new Color(255,153,51)), //10
+            new StreetField("Swimmingpoolen", "$2", "Mulighed for at drukne", 2, new Color(255,153,51)), //11
+            new RefugeField("default", "Gratis parkering", "Gratis parkering"), //12
+            new StreetField("Spillehallen", "$3", "Ludomani kan forekomme", 3, Color.red), //13
+            new StreetField("Biografen", "$3", "Tag en lur", 3, Color.red), //14
+            new ChanceField("?", "CHANCE", "Tag et chancekort"), //15
+            new StreetField("Legetøjsbutikken", "$3", "Bazookaer osv..", 3, Color.yellow), //16
+            new StreetField("Dyrehandlen", "$3", "Vi har kun pingviner", 3, Color.yellow), //17
+            new JailField("default", "Gå i fængslet", "Gå til fængsel"), //18
+            new StreetField("Bowlinghallen", "$4", "Vi har ingen bander!", 4, new Color(36,154,50, 253)), //19
+            new StreetField("ZOO", "$4", "Find holger her", 4, new Color(36,154,50, 253)), //20
+            new ChanceField("?", "CHANCE", "Tag et chancekort"), //21
+            new StreetField("Vandlandet", "$5", "Drukne død version 2", 5, Color.blue), //22
+            new StreetField("Strandpromenaden", "$5", "HUSK SOLCREME!", 5, Color.blue) //23
         };
     }
 
-    public void setupGUI(){
-        guiFields = new GUI_Field[fields.length];
-        for(int i = 0;i<fields.length;i++){
-            Field field = fields[i];
-            switch(field.getClass().getSimpleName()){
-                case "StartField":
-                    guiFields[i] = new GUI_Start(field.getName(), field.getTooltip(), field.getDescription(), field.getForegroundColor(), field.getBackgroundColor());
-                    break;
-                case "StreetField":
-                    guiFields[i] = new GUI_Street(field.getName(), field.getTooltip(), field.getDescription(), ((StreetField) field).getRentString(), field.getForegroundColor(), field.getBackgroundColor());
-                    break;
-                case "ChanceField":
-                    guiFields[i] = new GUI_Chance(field.getName(), field.getTooltip(), field.getDescription(), field.getForegroundColor(), field.getBackgroundColor());
-                    break;
-                case "PrisonField":
-                case "JailField":
-                    guiFields[i] = new GUI_Jail(field.getName(), field.getTooltip(), field.getDescription(), field.getDescription(), field.getForegroundColor(), field.getBackgroundColor());
-                    break;
-                case "EmptyField":
-                    guiFields[i] = new GUI_Refuge(field.getName(), field.getTooltip(), field.getDescription(), field.getDescription(), field.getForegroundColor(), field.getBackgroundColor());
-                    break;
-            }
-        }
-        gui = new GUI(guiFields);
+    public GameBoard() {
+        setupPlayers();
+        setupFields();
+
+        InterfaceGUI.InitGui(fields, players);
+
+        playGame();
     }
 
-    public void setupGUIPlayers(){
-        // Sæt spillerne på GUI_Gameboard
-        Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
-        GUI_Player guiPlayer;
-        guiPlayers = new GUI_Player[players.length];
-        for (int i = 0; i < players.length; i++) {
-            GUI_Car car = new GUI_Car();
-            car.setPrimaryColor(colors[i]);
-            int startingBalance = 20;
-            if(players.length == 3){
-                startingBalance = 18;
-            }
-            else if(players.length == 4){
-                startingBalance = 16;
-            }
-            guiPlayer = new GUI_Player(players[i].getName(), startingBalance, car);
-            players[i].getAccount().setBalance(startingBalance);
-            gui.addPlayer(guiPlayer);
-            guiFields[0].setCar(guiPlayer, true); //start feltet
-            guiPlayers[i] = guiPlayer;
-        }
-    }
+    public void playGame(){
+        Die d1, d2;
+        d1 = new Die();
+        d2 = new Die();
 
-    public void fieldAction(Player player){
-        Field field = fields[player.getPositionIndex()];
-        field.fieldAction(player);
 
-        //Hvis man er rykket frem over start så skal indexet opdateres
-        if(player.getPositionIndex() >= fields.length){
-            player.setPlayerLocation(player.getPositionIndex() - fields.length);
-        }
+        int currentPlayerIndex = 0;
+        boolean gameover = false;
+        while(!gameover){
+            Player currentPlayer = players[currentPlayerIndex];
+            InterfaceGUI.showGuiText("Nu er det " + currentPlayer.getName() + "'s tur.");
 
-        System.out.println(player.getPositionIndex());
-        if(field.getName().equals("?")) //Hvis det er et chance felt
-        {
-            ChanceField chanceField = (ChanceField) field;
+            InterfaceGUI.waitDicesBtnClicked();
+            d1.rollDie();
+            d2.rollDie();
+            InterfaceGUI.setDices(d1.getDie(), d2.getDie());
+            currentPlayer.setFieldPosition(currentPlayer.getFieldPosition() + d1.getDie() + d2.getDie(), fields);
 
-            while(true) {
-                //Virker fordi du ikke kan lande på det samme felt i træk
-                Field newField = fields[player.getPositionIndex()];
-                if (field != newField) {
-                    updateGui();
-                    field.fieldAction(player);
-                    field = newField;
-                } else {
-                    break;
+            if(currentPlayer.isJailed()){
+                if(currentPlayer.hasJailCard()) {
+                    currentPlayer.setJailCard(false);
+                    InterfaceGUI.showGuiText("Spiller " + currentPlayer.getName() + " brugte sit fængsel kort til at komme ud af fængslet");
                 }
+                else {
+                    currentPlayer.getAccount().setBalance(currentPlayer.getAccount().getBalance() - 1);
+                    InterfaceGUI.setGuiPlayerBalance(currentPlayer);
+                    InterfaceGUI.showGuiText("Spiller " + currentPlayer.getName() + " betalte 1$ for at komme ud af fængslet");
+                }
+                currentPlayer.setJailed(false);
             }
-            switch(chanceField.getCurrentRandomCardIndex()){
-                case 1:
-                    break;
-                case 2:
-                case 5:
-                case 6:
-                case 10:
-                case 12:
-                case 13:
-                    //Hvis spilleren har trukket kortet at de skal have en grund gratis hvis de lander på en grund der ikke er ejet
-                    StreetField streetField = (StreetField)fields[player.getPositionIndex()];
-                    if(streetField.getOwner() == null){
-                        player.getAccount().setBalance(player.getAccount().getBalance() + streetField.getRent());
-                    }
-                    break;
-                case 3:
-                    //Træk et ekstra kort hvis du har fået kort nr 3. (MEN først efter man har lavet aktionen på det nye felt man er landet på)
-                    chanceField.fieldAction(player);
-                    break;
-                case 9:
-                    player.getAccount().setBalance(player.getAccount().getBalance() + players.length);
-                    for(Player otherPlayer : players){
-                        otherPlayer.getAccount().setBalance(otherPlayer.getAccount().getBalance() - 1);
-                    }
-                    break;
+
+            fieldAction(currentPlayer, false);
+
+            if(hasSomeoneLost()){
+                gameover = true;
             }
+
+            InterfaceGUI.showGuiText("Spiller " + currentPlayer.getName() + "'s tur er slut.");
+            currentPlayerIndex++;
+            if(currentPlayerIndex >= players.length) currentPlayerIndex = 0;
         }
     }
 
-    public boolean hasAnyoneLost(){
+    public boolean hasSomeoneLost(){
+        Player richestPlayer = players[0];
         for(Player player : players){
+            if(player.getAccount().getBalance() > richestPlayer.getAccount().getBalance()){
+                richestPlayer = player;
+            }
             if(player.getAccount().getBalance() < 0){
+                InterfaceGUI.showGuiText("Spillet slutter da " + player.getName() + " har tabt. Vinderen, den rigeste spiller, er " + richestPlayer.getName());
                 return true;
             }
         }
         return false;
     }
 
-    public void playGame() {
-        Die d1, d2;
-        d1 = new Die();
-        d2 = new Die();
+    public void fieldAction(Player player, boolean freeStreet){
+        Field field = fields[player.getFieldPosition()];
+        switch(field.getClass().getSimpleName()){
+            case "StartField":
+                //Gør ingen ting da bonusen ikke kun bliver modtaget når man lander på feltet men også når man passerer derfor er dette lavet længere oppe. (movePlayer)
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " landede på start feltet.");
+                break;
+            case "StreetField":
+                StreetField streetField = ((StreetField) field);
 
-        int currentPlayerIndex = 0;
-        Player currentPlayer;
-        while (!gameOver) {
-            currentPlayer = players[currentPlayerIndex];
-
-            //Kast terning
-            gui.getUserButtonPressed("", "Kast terning"); //Her stopper koden indtil brugeren har klikket på knappen
-            d1.rollDie();
-            d2.rollDie();
-            int d1Value = d1.getDie();
-            int d2Value = d2.getDie();
-            gui.setDice(d1Value, 0, 0, d2Value, 1, 0); //Se GUI docs for forklaring
-
-            //Tjekker om man er i spjældet
-            if(currentPlayer.IsJailed()){
-                if(!currentPlayer.isHavingJailCard()) {
-                    currentPlayer.getAccount().setBalance(currentPlayer.getAccount().getBalance() - 1);
+                Player owner = streetField.getOwner();
+                if(owner != null){
+                    if(owner == player){
+                        InterfaceGUI.showGuiText("Spiller " + player.getName() + " landede på grunden " + streetField.getName() + " og hyggede sig på sin egen grund ");
+                    }else {
+                        owner.getAccount().setBalance(owner.getAccount().getBalance() + streetField.getRent());
+                        player.getAccount().setBalance(player.getAccount().getBalance() - streetField.getRent());
+                        InterfaceGUI.setGuiPlayerBalance(player);
+                        InterfaceGUI.setGuiPlayerBalance(owner);
+                        InterfaceGUI.showGuiText("Spiller " + player.getName() + " landede på grunden " + streetField.getName() + " og betalte leje til " + owner.getName());
+                    }
                 }else{
-                    currentPlayer.setHaveJailCard(false);
+                    streetField.setOwner(player);
+                    if(freeStreet){
+                        InterfaceGUI.setGuiFieldOwner(streetField, player);
+                        InterfaceGUI.showGuiText("Spiller " + player.getName() + " landede på grunden " + streetField.getName() + " og fik det gratis det.");
+                    }else{
+                        player.getAccount().setBalance(player.getAccount().getBalance() - streetField.getRent());
+                        InterfaceGUI.setGuiPlayerBalance(player);
+                        InterfaceGUI.setGuiFieldOwner(streetField, player);
+                        InterfaceGUI.showGuiText("Spiller " + player.getName() + " landede på grunden " + streetField.getName() + " og købte det.");
+                    }
                 }
-                currentPlayer.setJailed(false);
-            }
-
-            //Skift bil position
-            int newLocation = currentPlayer.getPositionIndex() + d1Value + d2Value;
-            if(newLocation >= fields.length){
-                newLocation = newLocation - fields.length;
-            }
-            currentPlayer.setPlayerLocation(newLocation);
-
-            //opdater gui
-            updateGui();
-
-            //Når man lander på et felt skal der ske noget
-            fieldAction(currentPlayer);
-
-            //checker om nogen har passeret start
-            for(Player player : players){
-                ((StartField) fields[0]).isFieldPassed(player);
-            }
-
-            //checker om spillet skal stoppes
-            if(hasAnyoneLost()){
-                //der skal laves noget her med at spillet skal tjekke hvem der har tabt og skrive noget om vinderen..
-                gameOver = true;
-            }
-
-            //opdater gui
-            updateGui();
-
-            //tur slut
-            currentPlayerIndex++;
-            if(currentPlayerIndex == players.length) currentPlayerIndex = 0;
+                break;
+            case "ChanceField":
+                chanceCardAction(player, ((ChanceField) field));
+                break;
+            case "JailField":
+                if(player.getFieldPosition() == 18) { //18 er gå til fængsel og 6 er besøg fængsel (6 gør intet)
+                    player.setFieldPosition(6, fields);
+                    player.setJailed(true);
+                    InterfaceGUI.showGuiText("Spiller " + player.getName() + " er røget i fængsel.");
+                }else{
+                    InterfaceGUI.showGuiText("Spiller " + player.getName() + " er på besøg i fængslet.");
+                }
+                break;
+            case "RefugeField":
+                //Gør ingen ting. Det er et pause felt
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " tager en pause på pause feltet.");
+                break;
         }
     }
 
-    public void updateGui(){
-        for(Player player : players) {
-            for (GUI_Player guiPlayer : guiPlayers) {
-                if(guiPlayer.getName().equals(player.getName())){
-                    guiPlayer.setBalance(player.getAccount().getBalance());
-                    guiFields[player.getOldPositionIndex()].setCar(guiPlayer, false);
-                    guiFields[player.getPositionIndex()].setCar(guiPlayer, true);
-                }
-            }
+    public void chanceCardAction(Player player, ChanceField chanceField){
+        int cardIndex = chanceField.getRandomCardIndex();
+        ChanceCard chanceCard = chanceField.getChanceCard(cardIndex);
+        InterfaceGUI.setGuiCard(chanceCard.getName());
+        InterfaceGUI.showGuiText("Spiller " + player.getName() + " trækker et chancekort.");
+        switch(cardIndex){
+            case 0:
+            case 8:
+                MoveToCard moveToCard = (MoveToCard) chanceCard;
+                moveToCard.movePlayerToPosition(player, fields);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået rykket sin position.");
+                fieldAction(player, false);
+            break;
+
+
+            case 1:
+                MoveForwardCard moveForwardCard1 = (MoveForwardCard) chanceCard;
+                moveForwardCard1.movePlayer(player, fields);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået rykket sin position.");
+                fieldAction(player, false);
+            break;
+            case 3:
+                MoveForwardCard moveForwardCard2 = (MoveForwardCard) chanceCard;
+                moveForwardCard2.movePlayer(player, fields);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået rykket sin position og skal trække et kort mere efter spilleren har foretaget aktionen på den nye position.");
+                fieldAction(player, false);
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " trækker nu sit ekstra chance kort.");
+                chanceCardAction(player, chanceField); //Rekursivt kald
+            break;
+
+
+            case 2:
+            case 5:
+            case 6:
+            case 10:
+            case 12:
+            case 13:
+                FreeCard freeCard = (FreeCard) chanceCard;
+                freeCard.moveToRandomColorField(player, fields);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået rykket sin position og skal nu foretage en aktion på den grund han er landet på.");
+                fieldAction(player, true);
+            break;
+
+
+            case 4:
+            case 11:
+                MoneyCard moneyCard1 = (MoneyCard) chanceCard;
+                moneyCard1.playerGetIncome(player); //Hvis det er kort 5 (index 4) så mister spilleren 2
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået opdateret sin balance.");
+            break;
+            case 9:
+                MoneyCard moneyCard2 = (MoneyCard) chanceCard;
+                moneyCard2.playerGetIncomeFromOther(player, players);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået penge fra de andre spillere");
+            break;
+
+
+            case 7:
+                JailCard jailCard = (JailCard) chanceCard;
+                jailCard.activateOnPlayer(player);
+                InterfaceGUI.hideGuiCard();
+                InterfaceGUI.showGuiText("Spiller " + player.getName() + " har fået et fængsel kort.");
+            break;
         }
-
-        for(int i = 0; i< fields.length;i++){
-            Field field = fields[i];
-            GUI_Field guiField = guiFields[i];
-            try{
-                Player fieldOwner = ((StreetField) field).getOwner();
-                if(fieldOwner != null) {
-                    ((GUI_Street) guiField).setOwnerName(fieldOwner.getName());
-                }
-            }
-            catch(Exception e){
-                //Hvis det ikke er et streetfelt så bliver dette ramt.
-            }
-        }
-    }
-
-    public GameBoard() {
-        setupPlayers();
-        setupFields();
-        setupGUI();
-        setupGUIPlayers();
-
-        playGame();
     }
 }
 

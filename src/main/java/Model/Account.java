@@ -14,7 +14,6 @@ public class Account {
     }
     public void setBalance(int balance){
         this.balance = balance;
-        if(this.balance < 0) this.balance = 0;
     }
 
     @Override
