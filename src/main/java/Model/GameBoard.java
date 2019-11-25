@@ -49,7 +49,7 @@ public class GameBoard {
 
     public void setupFields(){
         fields = new Field[]{
-            new StartField("Start", "Modtag: $2", "Modtag $1, når du passerer start"), //0
+            new StartField("Start", "Modtag: $1", "Modtag $1, når du passerer start"), //0
             new StreetField("Burgerbaren", "$1", "Bli tyk her", 1, new Color(165,42,42)), //1
             new StreetField("Pizzahuset", "$1", "Bli også tyk her", 1, new Color(165,42,42)), //2
             new ChanceField("?", "CHANCE", "Tag et chancekort"), //3
