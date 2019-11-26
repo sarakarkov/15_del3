@@ -6,8 +6,8 @@ import java.awt.*;
 
 import static org.junit.Assert.*;
 
-// Oprettet test på en metode i klassen "StreetFieldTest"
-// Erklærer testobjektet "Iskiosken" som en global variabel
+// Oprettet test på en metode i klassen "StreetField"
+// Erklærer testobjektet "Iskiosken" som en lokal variabel for StreetFieldTest
 // Kalder metoden på testobjektet som det ene parameter, og det forventede resultat som det andet parameter
 // Testen er bestået
 
