@@ -4,7 +4,11 @@ import Model.Field.Field;
 import Model.Player;
 
 public class MoveForwardCard extends ChanceCard {
+
+    //Attribut
     private int positionForward;
+
+    //Set metode som sætter navn og hvor meget man skal rykke sig
     public MoveForwardCard(String name, int positionForward) {
         super(name);
         this.positionForward = positionForward;
@@ -14,3 +18,6 @@ public class MoveForwardCard extends ChanceCard {
         player.setFieldPosition(player.getFieldPosition() + positionForward, fields);
     }
 }
+
+
+
