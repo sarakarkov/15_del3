@@ -14,40 +14,46 @@ public class GameBoard {
         // Initialisering af spillere
         Scanner input = new Scanner(System.in);
         int totalPlayers;
-        while (true) {
+        while (true) { //Try-catch statement i et while-loop.
             try {
                 System.out.println("Indtast antal spillere mellem 2 og 4:");
-                totalPlayers = input.nextInt();
+                totalPlayers = input.nextInt(); // Scanner brugerinput
                 if (totalPlayers > 1 && totalPlayers < 5) break;
-            } catch (Exception e) {
+                //Hvis antal spillere er større end 1 og mindre end 5 breaker loopen, og koden kører videre.
+                //Hvis ikke, kører loopen i ring (sout printes) indtil antallet af spillere passer.
+            } catch (Exception e) { //Catch handler. Koden vil kun gå i catch handleren, hvis input.nextInt() fejler.
                 input.nextLine();  // Fordi nextInt ikke kalder \n som er ny line, derfor bliver denne automatisk kaldt
             }
         }
         input.nextLine();  // Fordi nextInt ikke kalder \n som er ny line, derfor bliver denne automatisk kaldt
-        players = new Player[totalPlayers];
+        players = new Player[totalPlayers]; //Initialisering af antallet af spillere
         for (int i = 0; i < totalPlayers; i++) {
-            System.out.println("Indtast spiller nr. " + (i + 1));
-            String playerName = input.nextLine();
-            boolean exist = false;
+            //For-loop.
+            // Tællervariablen "i" starter med at være 0, og for hver gang loopen køres, tilsættes der 1 til "i" (i++)
+            // Bemærk: Loopen slutter lige før den sidste sout.
+            System.out.println("Indtast spiller nr. " + (i + 1)); //0+1 giver 1
+            String playerName = input.nextLine(); //Scanner brugerinput
+            boolean exist = false; //Jeg ved ikke hvordan jeg skal forklare det her
             for(Player p : players){
                 if(p != null && p.getName().equals(playerName)){
                     exist = true;
                 }
             }
-            if(!exist){
+            if(!exist){ //Sætter likviditet ud fra antallet af spillere.
                 Account account = new Account(20);;
                 if(totalPlayers == 3) account = new Account(18);
                 else if(totalPlayers == 4) account = new Account(16);
                 players[i] = new Player(playerName, account);
             }else {
-                i--;
+                i--; //Der trækkes én fra "i", da navnet allerede eksisterer og spilleren skal have et andet navn.
+                // (Det er den samme sætning der printes.
                 System.out.println("Navnet eksisterer allerede.");
             }
         }
         System.out.println("Spillet begynder. GUI'en bliver åbnet.");
     }
 
-    public void setupFields(){
+    public void setupFields(){ //Opsætning af GUI felter.
         fields = new Field[]{
             new StartField("Start", "Modtag: $1", "Modtag $1, når du passerer start"), //0
             new StreetField("Burgerbaren", "$1", "Bli tyk her", 1, new Color(165,42,42)), //1
@@ -85,7 +91,7 @@ public class GameBoard {
         playGame();
     }
 
-    public void playGame(){
+    public void playGame(){ //Void returnerer ikke noget. Opsætning af terninger
         Die d1, d2;
         d1 = new Die();
         d2 = new Die();
@@ -97,13 +103,19 @@ public class GameBoard {
             Player currentPlayer = players[currentPlayerIndex];
             InterfaceGUI.showGuiText("Nu er det " + currentPlayer.getName() + "'s tur.");
 
-            InterfaceGUI.waitDicesBtnClicked();
+            InterfaceGUI.waitDicesBtnClicked(); //Venter på at der trykkes på knappen i GUI'en, og ruller derefter terningerne.
             d1.rollDie();
             d2.rollDie();
-            InterfaceGUI.setDices(d1.getDie(), d2.getDie());
+            InterfaceGUI.setDices(d1.getDie(), d2.getDie()); //Viser hvilke tal man har fået af at slå terningerne.
             currentPlayer.setFieldPosition(currentPlayer.getFieldPosition() + d1.getDie() + d2.getDie(), fields);
+            //Rykker spilleren det antal øjne som terningerne viser efter de er blevet kastet
 
             if(currentPlayer.isJailed()){
+                /*If-else-statement som bruges hvis en spiller er i fængsel
+                Hvis spilleren har et fængselskort, bruges dette næste gang det er spillerens tur.
+                Hvis spilleren ikke har et fængselskort, mindskes spillerens likviditetskonto med 1.
+                 */
+
                 if(currentPlayer.hasJailCard()) {
                     currentPlayer.setJailCard(false);
                     InterfaceGUI.showGuiText("Spiller " + currentPlayer.getName() + " brugte sit fængsel kort til at komme ud af fængslet");
@@ -118,7 +130,7 @@ public class GameBoard {
 
             fieldAction(currentPlayer, false);
 
-            if(hasSomeoneLost()){
+            if(hasSomeoneLost()){ //Slutter spillet hvis en af spillerne har tabt.
                 gameover = true;
             }
 
@@ -128,7 +140,7 @@ public class GameBoard {
         }
     }
 
-    public boolean hasSomeoneLost(){
+    public boolean hasSomeoneLost(){ //Tjekker om nogle af spillerne har en likviditet på 0, og dermed tabt.
         Player richestPlayer = players[0];
         for(Player player : players){
             if(player.getAccount().getBalance() > richestPlayer.getAccount().getBalance()){
