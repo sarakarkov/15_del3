@@ -8,7 +8,9 @@ public class Die {
     public void rollDie() {
         this.value = new Random().nextInt(6) + 1;
     }
+    //Void som ruller terningerne, returnerer intet.
     public int getDie() {
         return this.value;
 }
+    // Int som returnerer værdien af terningerne.
 }
