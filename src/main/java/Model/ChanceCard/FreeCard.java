@@ -14,7 +14,7 @@ public class FreeCard extends ChanceCard {
 
     // Konstruktor som gør at man kan sætte navn og antal den skal flytte
     public FreeCard(String name, int[] fieldRanges) {
-        super(name);
+        super(name); //Henter name fra konstruktoren i ChanceCard klassen
         this.fieldRanges = fieldRanges;
     }
 

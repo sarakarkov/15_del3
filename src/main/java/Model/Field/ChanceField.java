@@ -5,24 +5,31 @@ import Model.ChanceCard.*;
 import java.awt.*;
 import java.util.Random;
 
+//Nedarver fra Field
+
 public class ChanceField extends Field {
     private ChanceCard[] chanceCards;
 
+
+    //Set konstruktor
     public ChanceField(String name, String subtext, String description) {
         super(name, subtext, description);
         initChanceCards();
     }
 
+    //Konstruktor
     public ChanceField(String name, String subtext, String description, Color foregroundColor) {
         super(name, subtext, description, foregroundColor);
         initChanceCards();
     }
 
+    //Konstruktor
     public ChanceField(String name, String subtext, String description, Color foregroundColor, Color backgroundColor) {
         super(name, subtext, description, foregroundColor, backgroundColor);
         initChanceCards();
     }
 
+    //Liste af arrays med name og ændring
     public void initChanceCards(){
         chanceCards = new ChanceCard[]{
             new MoveToCard("Chance1# Ryk frem til start og modtag $1", 24),
@@ -42,6 +49,7 @@ public class ChanceField extends Field {
         };
     }
 
+    //Get metode til at trække et random kort
     public int getRandomCardIndex(){
         Random rand = new Random();
         int index = rand.nextInt(chanceCards.length);
